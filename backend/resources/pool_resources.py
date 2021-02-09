@@ -2,6 +2,7 @@ from backend.models.pool import Pool
 from backend.dao.pool_dao import PoolDao
 from flask_restful import fields, marshal_with
 from backend.resources.base_resources import BaseResource
+from backend.resources.rules import Rules
 
 
 class PoolResources(BaseResource):
@@ -24,7 +25,8 @@ class PoolResources(BaseResource):
 
     @marshal_with(fields)
     def post(self):
-        return super().post()
+        result = Rules().check_model()
+        return result
 
     @marshal_with(fields)
     def put(self, id: int):
