@@ -10,7 +10,7 @@ api_app = Api(app)
 
 api_app.add_resource(PoolResources, '/api/pool/product',
                      endpoint='products_pool')
-api_app.add_resource(PoolResources, '/api/pool/product/<int:id_>',
+api_app.add_resource(PoolResources, '/api/pool/product/<int:id>',
                      endpoint='product_pool')
 
 
