@@ -1,5 +1,6 @@
 aniso8601==8.1.1
 attrs==20.3.0
+autopep8==1.5.5
 click==7.1.2
 coverage==5.4
 Flask==1.1.2
@@ -12,6 +13,7 @@ packaging==20.9
 pluggy==0.13.1
 psycopg2-binary==2.8.6
 py==1.10.0
+pycodestyle==2.6.0
 pyparsing==2.4.7
 pytest==6.2.2
 pytest-cov==2.11.1
