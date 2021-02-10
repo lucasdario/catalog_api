@@ -16,8 +16,12 @@ class BaseResource(Resource):
 
         return self.__dao.read_all()
 
-    def post(self):
+    def post(self, status=bool):
         data = request.json
+        if status:
+            data['approved'] = True
+        else:
+            data['approved'] = False
         model = self.__model_type(**data)
 
         return self.__dao.save(model)

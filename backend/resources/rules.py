@@ -1,7 +1,10 @@
 import re
 from flask import request
+from sqlalchemy.sql.functions import mode
 from backend.models.pool import Pool
 from backend.models.fake_product_model import ProductModel
+from backend.models.fake_seller_model import SellerModel
+from backend.models.fake_category_model import CategoryModel
 
 
 class Rules():
@@ -10,8 +13,13 @@ class Rules():
         model = Pool(**data)
 
         model_product = ProductModel().instance_obj(model.fk_product)
+        model_seller = SellerModel().instance_obj(model.fk_seller)
+        model_category = CategoryModel().instance_obj(model.fk_category)
 
         self.check_product(model_product)
+        self.check_seller(model_seller)
+        self.check_category(model_category)
+
         return True
 
     def check_product(self, model: ProductModel):
@@ -45,3 +53,16 @@ class Rules():
 
         if model.weight > 10:
             raise ValueError('Weight invalid')
+
+    def check_seller(self, model: SellerModel):
+        if len(model.name) > 50:
+            raise ValueError('The name cannot be greater than 50')
+        if not model.active:
+            raise ValueError('The seller is not enabled')
+
+    def check_category(self, model: CategoryModel):
+        improper_word = ['armas', 'Agrotóxicos', 'sexy', 'alcool']
+
+        for word in improper_word:
+            if re.search(word, model.name, re.IGNORECASE):
+                raise ValueError('Improper word detected in category')

@@ -28,8 +28,9 @@ class PoolResources(BaseResource):
     def post(self):
         try:
             if Rules().check_model():
-                return super().post()
+                return super().post(True)
         except Exception as erro:
+            super().post(False)
             return abort(jsonify(cod_error='401',
                                  detail=erro.args))
 
