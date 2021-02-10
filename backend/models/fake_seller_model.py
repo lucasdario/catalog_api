@@ -1,10 +1,10 @@
 class SellerModel():
-    def __init__(self, id: int, name: str, active: bool) -> None:
+    def __init__(self, id: int = None, name: str = None, active: bool = None) -> None:
         self.id = id
         self.name = name
         self.active = active
 
-    def instance(op):
+    def instance_obj(self, op):
         obj = object
 
         if op == 1:
