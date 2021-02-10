@@ -5,42 +5,43 @@ from backend.models.fake_product_model import ProductModel
 
 
 class Rules():
-    def check_model(self):
+    def check_model(self) -> bool:
         data = request.json
         model = Pool(**data)
 
         model_product = ProductModel().instance_obj(model.fk_product)
-        result = self.check_product(model_product)
-        return result
+
+        self.check_product(model_product)
+        return True
 
     def check_product(self, model: ProductModel):
         improper_word = ['arma', 'gun', 'sexy', 'alcool']
 
         if not model.name:
-            return 'Name can not empty'
+            raise ValueError('Name can not empty')
         if len(model.name) < 50:
-            return 'The name cannot be less than 50'
+            raise ValueError('The name cannot be less than 50')
         for word in improper_word:
-            if re.search('\\'+model.name+'\\b', word, re.IGNORECASE):
-                return 'Improper word detected'
+            if re.search(word, model.name, re.IGNORECASE):
+                raise ValueError('Improper word detected in name')
 
         if not model.description:
-            return 'Description can not empty'
+            raise ValueError('Description can not empty')
         if len(model.description) < 100:
-            return 'The description cannot be less than 100'
+            raise ValueError('The description cannot be less than 100')
         for word in improper_word:
-            if re.search(r"\\"+model.description+"\\b", word, re.IGNORECASE):
-                return 'Improper word detected'
+            if re.search(word, model.description, re.IGNORECASE):
+                raise ValueError('Improper word detected in description')
 
         if model.price < 14.99:
-            return 'Price cannot be less than R$14,99'
+            raise ValueError('Price cannot be less than R$14,99')
 
         try:
             sum_of_dimensions = model.width + model.height + model.length
             if sum_of_dimensions < 29 or sum_of_dimensions > 200:
-                return 'Dimensions invalid'
+                raise ValueError('Dimensions invalid')
         except Exception as error:
-            return error
+            raise error
 
         if model.weight > 10:
-            return 'Weight invalid'
+            raise ValueError('Weight invalid')
